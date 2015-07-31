@@ -1,0 +1,79 @@
+    html 
+    {
+      height: 100%;
+    }
+    body 
+    {
+      margin: 0;
+      padding: 0;
+      background: url(/loading.gif) center center no-repeat;
+      color: #ffffff;
+      font-family: sans-serif;
+      font-size: 13px;
+      line-height: 20px;
+      height: 100%;
+    }
+
+    #Taboolalogo
+    {
+     max-height: 250px;
+     max-width: 250px;
+     display: block;
+     position: absolute;
+     top: 25px;
+     left: 25px;
+
+   }
+
+   #info
+   {
+    color: #181874;
+    display: block;
+    font-family: sans-serif;
+    font-size: 60px;
+    position: relative;
+  }
+
+  #currentTime
+  {
+    left: 25px;
+    position: absolute;
+    top: 240px;
+  }
+
+  #numberOfClicks
+  {
+    left: 25px;
+    position: absolute;
+    top: 300px;
+  }
+
+  #titleTable
+  {
+    font-size: 15px;
+    border-collapse: collapse;
+    color: blue;
+    position: absolute;
+    right: 160px;
+    top: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100px;
+  }
+  #titleTable .itemClicks
+  {
+    color : black;
+    padding: 12px 50px;
+  }
+  #titleTable .itemClickLogo img
+  {
+    max-height: 30px;
+    max-width: 30px;
+  }
+  #titleTable td 
+  {
+    font-family: Tahoma;
+    font-size: 20px;
+    color : black;
+    padding: 12px ;    
+  }
