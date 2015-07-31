@@ -1,12 +1,11 @@
 {
-    "name": "cesium",
-    "version": "1.11.0",
-    "description": "Cesium is a JavaScript library for creating 3D globes and 2D maps in a web browser without a plugin.",
-    "homepage": "http://cesiumjs.org",
+    "name": "WebGl Taboola Clicks",
+    "version": "1.0.0",
+    "description": "Present worldwide clicks over a globe - with WebGL technology ",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/AnalyticalGraphicsInc/cesium.git"
+        "url": "https://github.com/LiranSegev/TaboolaClicksWebGL.git"
     },
     "devDependencies": {
         "jsdoc": "3.3.0-beta3",
