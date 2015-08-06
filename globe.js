@@ -21,74 +21,12 @@
   var windowrWidth, windowHeight;
   var earthSphere;
   var earthShineRing;
-
-  var curZoomSpeed = 0;
-  var zoomSpeed = 50;
-
+  
   var rotation = { x: 0, y: 0 },
   target = { x: Math.PI*3/2, y: Math.PI / 6.0 },
   targetOnDown = { x: 0, y: 0 };
 
   var distance = 10000000, distanceTarget = 100000;
-  var padding = 40;
-  var PI_HALF = Math.PI / 2;
-
-  function  init()
-  {
-
-    var shader, uniforms, material;
-    windowrWidth = container.offsetWidth || window.innerWidth;
-    windowHeight = container.offsetHeight || window.innerHeight;
-
-    camera = new THREE.PerspectiveCamera(30, windowrWidth / windowHeight, 1, 10000);
-    camera.position.z = distance;
-
-    scene = new THREE.Scene();
-
-    var sphereGeometry = new THREE.SphereGeometry(200, 40, 30);
-
-    shader = Shaders['earth'];
-    uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-
-    uniforms['texture'].value = THREE.ImageUtils.loadTexture('world.jpg');
-
-    var earthMaterial = new THREE.ShaderMaterial({
-
-      uniforms: uniforms,
-      vertexShader: shader.vertexShader,
-      fragmentShader: shader.fragmentShader
-
-    });
-
-    var earthSphere = new THREE.Mesh(sphereGeometry, earthMaterial);
-    earthSphere.rotation.y = Math.PI;
-    scene.add(earthSphere);
-    shader = Shaders['atmosphere'];
-    uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-
-    var shineRingMaterial = new THREE.ShaderMaterial({
-
-      uniforms: uniforms,
-      vertexShader: shader.vertexShader,
-      fragmentShader: shader.fragmentShader,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
-      transparent: true
-
-    });
-
-    earthShineRing = new THREE.Mesh(sphereGeometry, shineRingMaterial);
-    earthShineRing.scale.set( 1.05, 1.05, 1.05 );
-    scene.add(earthShineRing);
-
-    renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setSize(windowrWidth, windowHeight);
-    renderer.setClearColor(0xd3dfe1, 1);
-    renderer.domElement.style.position = 'absolute';
-    container.appendChild(renderer.domElement);
-    window.addEventListener('resize', onWindowResize, false);
-  }
-
   var Shaders = {
     'earth' : {
       uniforms: {
@@ -134,6 +72,66 @@
     }
   };
 
+
+  function  init()
+  {
+
+    var shader, uniforms, material;
+    windowrWidth = container.offsetWidth || window.innerWidth;
+    windowHeight = container.offsetHeight || window.innerHeight;
+
+    camera = new THREE.PerspectiveCamera(30, windowrWidth / windowHeight, 1, 10000);
+    camera.position.z = distance;
+
+    scene = new THREE.Scene();
+
+    var sphereGeometry = new THREE.SphereGeometry(200, 40, 30);
+
+    shader = Shaders['earth'];
+    uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+
+    uniforms['texture'].value = THREE.ImageUtils.loadTexture('world.jpg');
+
+    var earthMaterial = new THREE.ShaderMaterial({
+
+      uniforms: uniforms,
+      vertexShader: shader.vertexShader,
+      fragmentShader: shader.fragmentShader
+
+    });
+    var earthSphere = new THREE.Mesh(sphereGeometry, earthMaterial);
+    earthSphere.rotation.y = Math.PI;
+    scene.add(earthSphere);
+
+    shader = Shaders['atmosphere'];
+    uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+
+    var shineRingMaterial = new THREE.ShaderMaterial({
+
+      uniforms: uniforms,
+      vertexShader: shader.vertexShader,
+      fragmentShader: shader.fragmentShader,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true
+
+    });
+
+    earthShineRing = new THREE.Mesh(sphereGeometry, shineRingMaterial);
+    earthShineRing.scale.set( 1.05, 1.05, 1.05 );
+    scene.add(earthShineRing);
+
+
+
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true });
+    renderer.setSize(windowrWidth, windowHeight);
+    renderer.setClearColor(0x11111, 0);
+    renderer.domElement.style.position = 'absolute';
+    container.appendChild(renderer.domElement);
+    window.addEventListener('resize', onWindowResize, false);
+  }
+
+
   function onWindowResize( event )
   {
     camera.aspect = container.offsetWidth / container.offsetHeight;
@@ -157,9 +155,10 @@
 
   function render() 
   {
+    var curZoomSpeed = 0;
     zoom(curZoomSpeed);
 
-    rotation.x +=0.005;
+    rotation.x +=0.007;
     distance += (distanceTarget - distance) * 0.3;
     camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
     camera.position.y = distance * Math.sin(rotation.y);
@@ -189,41 +188,42 @@
 
   this.AddClick = function (click) 
   {
-   var material = new THREE.MeshBasicMaterial({
-    color : 0x0082f9,
-    transparent: true,
-    opacity: 1
-  });
+    var newColor = new THREE.Color( Math.random()*16777215 );
+    var material = new THREE.MeshBasicMaterial({
+      color : 0x0082f9,//0x0082f9,
+      transparent: true,
+      opacity: 1
+    });
 
-   var position = latLonToVector3(parseInt(click.latitude),parseInt(click.longitude),0);
-   var circle = new THREE.Mesh( circleGeometry, material );
+    var position = latLonToVector3(parseInt(click.latitude),parseInt(click.longitude),0);
+    var circle = new THREE.Mesh( circleGeometry, material );
 
-   circle.position.x = position.x;  
-   circle.position.y = position.y;
-   circle.position.z = position.z;
-   circle.lookAt(globe.scene.position);
+    circle.position.x = position.x;  
+    circle.position.y = position.y;
+    circle.position.z = position.z;
+    circle.lookAt(globe.scene.position);
 
-   globe.scene.add(circle);
+    globe.scene.add(circle);
 
-   TweenLite.to(circle.material,5, {
-    opacity: 0,
-    ease: Quad.easeOut,
-    onComplete:RemoveFromScene,
-    onCompleteParams:[circle]
-  });
+    TweenLite.to(circle.material,5, {
+      opacity: 0,
+      ease: Quad.easeOut,
+      onComplete:RemoveFromScene,
+      onCompleteParams:[circle]
+    });
 
 
- }
- function RemoveFromScene(circle)
- {
-  globe.scene.remove(circle);
-}
+  }
+  function RemoveFromScene(circle)
+  {
+    globe.scene.remove(circle);
+  }
 
-init();
-this.renderer = renderer;
-this.scene = scene;
-this.latLonToVector3 = latLonToVector3;
-return this;
+  init();
+  this.renderer = renderer;
+  this.scene = scene;
+  this.latLonToVector3 = latLonToVector3;
+  return this;
 
 };
 

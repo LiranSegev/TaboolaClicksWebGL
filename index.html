@@ -8,36 +8,57 @@
 <body>
 
   <div id = "container"></div>
+<div id = 'background'></div>
+  <img id = "Taboolalogo" src = "Taboolalogo.png" />
+  <div id = 'info'>
+    <div id = 'currentTime' >Date </div>
+    <div id = 'numberOfClicks'> number </div>
+  </div>
+  <div id = 'topItems'>Top items
+    <table id = "titleTable">
+      <tr>
+        <td id = 'itemClickLogo1' class = "itemClickLogo"><img src = 'sample.jpg'></td>
+        <td id = 'itemTitle1'class = 'itemTitle'>Title 1 </td>
+        <td id = 'itemClicks1'class = 'itemClicks'>3213</td> 
+      </tr>
+      <tr>
+        <td id = 'itemClickLogo2' class = "itemClickLogo"><img src = 'sample.jpg'></td>
+        <td id = 'itemTitle2'class = 'itemTitle'>Title 2 </td>
+        <td id = 'itemClicks2'class = 'itemClicks'>clicks</td> 
+      </tr>
+      <tr>
+        <td id = 'itemClickLogo3' class = "itemClickLogo"><img src = 'sample.jpg'></td>
+        <td id = 'itemTitle3'class = 'itemTitle'>Title 3 </td>
+        <td id = 'itemClicks3'class = 'itemClicks'>clicks</td> 
+      </tr>
+    </table>
+  </div>
+  <div id="topCountries">
+    <div class="plan">
+      <div id = 'country1' class="header"></div>
+      <div id = 'countryClicks1' class="price"></div>  
+    </div>
+    <div class="plan">
+      <div id = 'country2' class="header"></div>
+      <div id = 'countryClicks2' class="price"></div>  
+    </div>
+    <div class="plan">
+      <div id = 'country3'class="header"></div>
+      <div id = 'countryClicks3' class="price"></div>  
+    </div>
+  </div>
 
-    <img id = "Taboolalogo" src = "Taboolalogo.png" />
-<div id = 'info'>
-  <div id = 'currentTime' >Date </div>
-  <div id = 'numberOfClicks'> number </div>
-</div>
-  <table id = "titleTable">
-    <tr>
-      <td id = 'itemClickLogo1' class = "itemClickLogo"><img src = 'sample.jpg'></td>
-      <td id = 'title1'>Title 2 </td>
-      <td>ClicksNum</td> 
-    </tr>
-    <tr>
-      <td id = 'itemClickLogo2' class = "itemClickLogo"><img src = 'sample.jpg'></td>
-      <td>Title 2 </td>
-      <td>ClicksNum</td> 
-    </tr>
-    <tr>
-      <td id = 'itemClickLogo3' class = "itemClickLogo"><img src = 'sample.jpg'></td>
-      <td>Title 2 </td>
-      <td>ClicksNum</td> 
-    </tr>
-  </table>
+<!-- <div class="totalClicks">
+    <span class="totalClicks-count">4200</span>
+    <p class="totalClicks-detail">Clicks</p>
+</div> -->
 
   <script type="text/javascript" src="/third-party/Detector.js"></script>
   <script type="text/javascript" src="/third-party//three.min.js"></script>
   <script type="text/javascript" src="/third-party/Tween.js"></script>
-  <script type="text/javascript" src="/third-party/CSS3DRenderer.js"></script>
+  <script type="text/javascript" src="/third-party/TweenLite.min.js"></script>
+  // <script type="text/javascript" src="/jsonProcess.js"></script>
   <script type="text/javascript" src="/globe.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
   <script type="text/javascript">
 
     if(!Detector.webgl)
@@ -49,68 +70,27 @@
       var container = document.getElementById('container');
       var globe = new DAT.Globe(container);
 
-      var xhr;
-      
-      xhr = new XMLHttpRequest();
-      xhr.open('GET', 'taboolachallange-clicks.json', true);
-      xhr.onreadystatechange = function(e) {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            window.data = data;
-            
-            var left = 0;
-            var right = parseInt(data.data.length/60);
-            var interval = right;
-
-            document.getElementById("currentTime").innerHTML = unixTimeToDate(data.generated);
-
-            window.setInterval(function()
-            {
-              for (var j = left; j < right && right < data.data.length;j++)
-              {
-                globe.AddClick(data.data[j]);
-              }
-              document.getElementById("numberOfClicks").innerHTML = right;
-              if (right >= data.data.length)
-              {
-                left = 0; 
-                right =interval;
-              }
-              else
-              {
-               left = right;
-               right += interval;
-             }
-           },1000);
-
-          }
-        }
-      };
+      var fileName = 'taboolachallange-clicks.json'
+      window.setInterval(jsonRequest(),60000);
+      //document.body.style.backgroundImage = 'none'; // remove loading GIF
       globe.animate();
-      document.getElementById('title1').innerHTML = "ajksbdiabsdibuiashdiahiosdhioasdias";
-      xhr.send(null);
     }
 
-    function unixTimeToDate (unixTime)
-    {
-      var date = new Date(unixTime * 1000);
-      var dateToReturn = addZero(date.getHours()) + ' : '+ addZero (date.getMinutes());   
+    // window.setInterval(function () {
 
-      return dateToReturn;  
-    }
-
-    function addZero (time) 
-    {
-     if (time < 10)
-     {
-      time = "0" + time;
-    }
-    return time;
-  }
+    //   if (document.getElementById('topCountries').style.display == 'block')
+    //   {
+    //     document.getElementById('topCountries').style.display = 'none';
+    //   }
+    //   else
+    //   {
+    //     document.getElementById('topCountries').style.display = 'block';
+    //   }
+    // },2000)
 
 
-</script>
+
+  </script>
 
 </body>
 
