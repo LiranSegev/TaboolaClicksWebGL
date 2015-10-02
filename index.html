@@ -11,6 +11,7 @@
 <div id='background'></div>
 <img id="Taboolalogo" src="Taboolalogo.png"/>
 <img id="heatMap" src="heatMap.jpg"/>
+
 <div id='info'>
     <div id='currentTime'></div>
     <div id='numberOfClicks'></div>
@@ -49,48 +50,59 @@
     <!--</div>-->
 <!--</div>-->
 
-<!-- <div class="totalClicks">
-    <span class="totalClicks-count">4200</span>
-    <p class="totalClicks-detail">Clicks</p>
-</div> -->
+<!--</div>-->
+    <!--<div class="plan">-->
+    <!--<div id='country2' class="header"></div>-->
+    <!--<div id='countryClicks2' class="price"></div>-->
+    <!--</div>-->
+    <!--<div class="plan">-->
+    <!--<div id='country3' class="header"></div>-->
+    <!--<div id='countryClicks3' class="price"></div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-<script type="text/javascript" src="/third-party/Detector.js"></script>
-<script type="text/javascript" src="/third-party//three.min.js"></script>
-<script type="text/javascript" src="/third-party/Tween.js"></script>
-<script type="text/javascript" src="/third-party/TweenLite.min.js"></script>
-<script type="text/javascript" src="/jsonProcess.js"></script>
-<script type="text/javascript" src="/globe.js"></script>
-<script type="text/javascript">
+    <!-- <div class="totalClicks">
+        <span class="totalClicks-count">4200</span>
+        <p class="totalClicks-detail">Clicks</p>
+    </div> -->
 
-    if (!Detector.webgl) {
-        Detector.addGetWebGLMessage();
-    }
-    else {
-        var container = document.getElementById('container');
-        var globe = new DAT.Globe(container);
-        var fileName = 'taboolachallange-clicks.json'
-        jsonRequest(fileName)
-        window.setInterval(function () {
-            fileName = 'taboolachallange-clicks2.json'
+    <script type="text/javascript" src="/third-party/Detector.js"></script>
+    <script type="text/javascript" src="/third-party//three.min.js"></script>
+    <script type="text/javascript" src="/third-party/Tween.js"></script>
+    <script type="text/javascript" src="/third-party/TweenLite.min.js"></script>
+    <script type="text/javascript" src="/jsonProcess.js"></script>
+    <script type="text/javascript" src="/globe.js"></script>
+    <script type="text/javascript">
+
+        if (!Detector.webgl) {
+            Detector.addGetWebGLMessage();
+        }
+        else {
+            var container = document.getElementById('container');
+            var globe = new DAT.Globe(container);
+            var fileName = 'taboolachallange-clicks.json'
             jsonRequest(fileName)
-        }, 60000);
-        globe.animate();
-        startTime();
-    }
+            window.setInterval(function () {
+                fileName = 'taboolachallange-clicks2.json'
+                jsonRequest(fileName)
+            }, 60000);
+            globe.animate();
+            startTime();
+        }
 
-    function startTime() {
-        var today = new Date();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = addZero(m);
-        s = addZero(s);
-        document.getElementById('currentTime').innerHTML =
-                h + ":" + m + ":" + s;
-        setTimeout(startTime, 500);
-    }
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = addZero(m);
+            s = addZero(s);
+            document.getElementById('currentTime').innerHTML =
+                    h + ":" + m + ":" + s;
+            setTimeout(startTime, 500);
+        }
 
-</script>
+    </script>
 
 </body>
 
